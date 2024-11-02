@@ -44,13 +44,12 @@ class Missoes(db.Model):
     except Exception as e:
       print(e)
   
-@staticmethod
-def abortarMissao(self,id):
-    try:
-      db.session.query(Missoes).filter(Missoes.id == id).delete()
-      db.session.commit()
-    except Exception as e:
-        print(e)
+  def abortarMissão(self, id):
+      try:
+        db.session.query(Missoes).filter(Missoes.id == id).delete({"id": id})
+        db.session.commit()
+      except Exception as e:
+          print("Não foi possivel excluir os produtos", e)
 
 
 

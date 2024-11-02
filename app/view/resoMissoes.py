@@ -32,6 +32,10 @@ argumentos_update.add_argument('statusMissao', type=str)
 #deletar
 argumentos_delete = reqparse.RequestParser()
 argumentos_delete.add_argument('id', type=int)
+argumentos_delete.add_argument('nomeMissao', type=str)
+
+args = reqparse.RequestParser()
+args.add_argument('id', type=int)
 
 
 
@@ -64,10 +68,22 @@ class mudançaDePlanos(Resource):
     
 class abortarMissao(Resource):
     def delete(self):
-      try:     
-        datas = argumentos_delete.parse_args()
-        Missoes.abortarMissao(self,datas['id'],) 
-        return{"menssagem": 'Missão atualizadacom sucesso'}
-
-      except Exception as e:
-        return jsonify({'status':500, 'msg':f'{e}'})
+        try:
+            datas = argumentos_delete.parse_args()
+            Missoes.save_products(self, datas['id'],datas['nomeMissao'])
+            return {"message": 'Product create successfully!'}, 200
+        except Exception as e:
+            return jsonify({'status':500,'msg':f'{e}'}), 500
+        
+  
+class MissaoById(Resource):   
+    def get(self):
+        try:
+            datas = args.parse_args()
+            products = Missoes.list_id(datas['id'])
+            if products:
+                return jsonify(products)  # Ensure this is a JSON-serializable object
+            else:
+                return jsonify({'message': 'Missão não encontrada'}), 404
+        except Exception as e:
+            return jsonify({'status': 500, 'msg': str(e)}), 500

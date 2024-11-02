@@ -15,11 +15,12 @@ from app.models.missoes import Missoes
 with app.app_context():
   db.create_all()
 
-from app.view.resoMissoes import Index,relatarMissao,mudançaDePlanos,abortarMissao
+from app.view.resoMissoes import Index,relatarMissao,mudançaDePlanos,abortarMissao,MissaoById
 Api.add_resource(Index, "/")
 Api.add_resource(relatarMissao, "/create")
 Api.add_resource(mudançaDePlanos, "/update")
 Api.add_resource(abortarMissao, "/delete")
+Api.add_resource(MissaoById, "/search")
 
 '''@app.route("/index")
 def index():
